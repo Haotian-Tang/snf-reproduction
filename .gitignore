@@ -8,6 +8,9 @@ data/processed/
 /results/
 /reports/*.html
 /reports/*_files/
+/reports/*.knit.md
+/snf-container-report.html
+/snf-container-results/
 /output/
 /tmp/
 /archive/
@@ -18,3 +21,6 @@ __pycache__/
 vendor/**/.DS_Store
 vendor/**/.Rapp.history
 results/analysis.rds
+
+/.quarto/
+**/*.quarto_ipynb

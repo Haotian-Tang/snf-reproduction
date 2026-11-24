@@ -1,0 +1,148 @@
+{
+  "description": "Regression targets from the original 2026-10-23 homework run (R 4.6.1, survival 3.8-12, Apple R BLAS). These are project targets, not the paper results. No patient identifiers or input data are redistributed.",
+  "patients": 105,
+  "deaths": 18,
+  "patient_order_sha256": "e7ca88c51bceab193642a9c7880f368419b064d341274717762892eda8bf6087",
+  "features": {
+    "mRNA": 17814,
+    "Methylation": 23094,
+    "miRNA": 354
+  },
+  "methods": {
+    "mRNA": {
+      "logrank_p": 0.00587642540519668,
+      "sorted_cluster_sizes": [
+        13,
+        21,
+        22,
+        23,
+        26
+      ],
+      "partition_sha256": "f6f4223f002d35ebd9c0a8b0114df8d469603e7d26a6c9a4a12c877f6591f742"
+    },
+    "Methylation": {
+      "logrank_p": 0.242001678077097,
+      "sorted_cluster_sizes": [
+        17,
+        20,
+        20,
+        21,
+        27
+      ],
+      "partition_sha256": "a7b47429c886fafa70a972bd3ef0f3b3ec4552336f439453febdb327adba12b6"
+    },
+    "miRNA": {
+      "logrank_p": 0.00946543711306266,
+      "sorted_cluster_sizes": [
+        13,
+        14,
+        24,
+        25,
+        29
+      ],
+      "partition_sha256": "75a62498ddf6ee90a608f90141b02153a2216909e34724ca9b5e8c624415dfd4"
+    },
+    "SNF": {
+      "logrank_p": 0.00700584185234621,
+      "sorted_cluster_sizes": [
+        19,
+        19,
+        20,
+        23,
+        24
+      ],
+      "partition_sha256": "c195d471cd11e5996c6b1dc4fa9dbd41b49b1793a776d2872b2d15283a343e3c"
+    }
+  },
+  "diagnostics": [
+    {
+      "distance": "Euclidean",
+      "iterations": 10,
+      "K": 15,
+      "logrank_p": 0.000454259215602158,
+      "ARI_to_primary": 0.494632808973164
+    },
+    {
+      "distance": "squared_Euclidean_README",
+      "iterations": 10,
+      "K": 15,
+      "logrank_p": 0.000374283459240103,
+      "ARI_to_primary": 0.455249700579252
+    },
+    {
+      "distance": "Euclidean",
+      "iterations": 20,
+      "K": 15,
+      "logrank_p": 0.000454259215602158,
+      "ARI_to_primary": 0.494632808973164
+    },
+    {
+      "distance": "squared_Euclidean_README",
+      "iterations": 20,
+      "K": 15,
+      "logrank_p": 0.000374283459240103,
+      "ARI_to_primary": 0.455249700579252
+    },
+    {
+      "distance": "Euclidean",
+      "iterations": 10,
+      "K": 20,
+      "logrank_p": 0.00700584185234621,
+      "ARI_to_primary": 1.0
+    },
+    {
+      "distance": "squared_Euclidean_README",
+      "iterations": 10,
+      "K": 20,
+      "logrank_p": 0.0055967752737292,
+      "ARI_to_primary": 0.975992700648517
+    },
+    {
+      "distance": "Euclidean",
+      "iterations": 20,
+      "K": 20,
+      "logrank_p": 0.00700584185234621,
+      "ARI_to_primary": 1.0
+    },
+    {
+      "distance": "squared_Euclidean_README",
+      "iterations": 20,
+      "K": 20,
+      "logrank_p": 0.0055967752737292,
+      "ARI_to_primary": 0.975992700648517
+    },
+    {
+      "distance": "Euclidean",
+      "iterations": 10,
+      "K": 25,
+      "logrank_p": 8.66736209265413e-05,
+      "ARI_to_primary": 0.640666346747104
+    },
+    {
+      "distance": "squared_Euclidean_README",
+      "iterations": 10,
+      "K": 25,
+      "logrank_p": 0.00047980039537347,
+      "ARI_to_primary": 0.856725534825841
+    },
+    {
+      "distance": "Euclidean",
+      "iterations": 20,
+      "K": 25,
+      "logrank_p": 8.66736209265413e-05,
+      "ARI_to_primary": 0.640666346747104
+    },
+    {
+      "distance": "squared_Euclidean_README",
+      "iterations": 20,
+      "K": 25,
+      "logrank_p": 0.00047980039537347,
+      "ARI_to_primary": 0.856725534825841
+    }
+  ],
+  "network": {
+    "sum": 105.0,
+    "sum_squares": 28.461316763794837,
+    "trace": 54.382702788852
+  }
+}

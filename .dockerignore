@@ -1,0 +1,15 @@
+.git
+.pixi
+.quarto
+data
+vendor
+results
+archive
+output
+tmp
+**/__pycache__
+**/.DS_Store
+reports/*.html
+reports/*_files
+reports/*.knit.md
+scripts/build_report.py

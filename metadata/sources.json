@@ -1,0 +1,27 @@
+{
+  "publication_doi": "10.1038/nmeth.2810",
+  "original_download_date": "2026-10-23",
+  "assets": [
+    {
+      "id": "processed-data",
+      "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fnmeth.2810/MediaObjects/41592_2014_BFnmeth2810_MOESM206_ESM.zip",
+      "path": "data/raw/downloads/supplementary-data.zip",
+      "sha256": "0c859187cd9809b084d0d56088c776774beacba2ac61936d1a84555b813f4dbf",
+      "license": "Publisher supplement; no explicit standalone data reuse license identified."
+    },
+    {
+      "id": "software",
+      "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fnmeth.2810/MediaObjects/41592_2014_BFnmeth2810_MOESM205_ESM.zip",
+      "path": "data/raw/downloads/supplementary-software.zip",
+      "sha256": "8ae3e5d53ac6904c21b1933aef0bf1d64813f0c526417b232fe3ebb2fb4fe2aa",
+      "license": "GPL, as stated in SNFtool/DESCRIPTION; version unspecified."
+    },
+    {
+      "id": "methods",
+      "url": "https://media.springernature.com/original/springer-static/esm/art%3A10.1038%2Fnmeth.2810/MediaObjects/41592_2014_BFnmeth2810_MOESM204_ESM.pdf",
+      "path": "data/raw/downloads/supplementary-methods.pdf",
+      "sha256": "d3c7dc4b47745bf4064997d181ad048883c2620013de9975df05336a6828f34d",
+      "license": "Publisher supplement; no standalone Creative Commons license identified."
+    }
+  ]
+}

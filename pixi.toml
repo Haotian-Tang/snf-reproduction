@@ -1,0 +1,37 @@
+[workspace]
+name = "snf-reproduction"
+version = "1.0.0"
+description = "Reproducible SNF reanalysis of the published TCGA breast cohort"
+authors = ["Haotian Tang <haotian.tang@mbzuai.ac.ae>"]
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-arm64"]
+
+[dependencies]
+python = "3.13.*"
+r-base = "4.5.*"
+r-survival = ">=3.8,<4"
+r-jsonlite = ">=2,<3"
+r-knitr = ">=1.50,<2"
+r-rmarkdown = ">=2.29,<3"
+quarto = ">=1.9,<2"
+pyyaml = ">=6,<7"
+cffconvert = ">=2,<3"
+git = ">=2.49,<3"
+libblas = { version = "*", build = "*openblas" }
+
+[activation.env]
+TZ = "UTC"
+LC_ALL = "C"
+OMP_NUM_THREADS = "1"
+OPENBLAS_NUM_THREADS = "1"
+MKL_NUM_THREADS = "1"
+VECLIB_MAXIMUM_THREADS = "1"
+
+[tasks]
+download = { cmd = "python scripts/fetch_data.py", description = "Download, verify and protect the original inputs" }
+report = { cmd = "quarto render reports/snf-report.qmd", depends-on = ["download"], description = "Recompute the analysis and render the report" }
+validate = { cmd = "python scripts/validate_results.py", depends-on = ["report"], description = "Check outputs against the reference analysis" }
+citation = { cmd = "cffconvert --validate -i CITATION.cff", description = "Validate the citation metadata" }
+test = { cmd = "python -m unittest discover -s tests -v", description = "Check input integrity and archive handling" }
+reproduce = { cmd = "python scripts/provenance.py", depends-on = ["validate", "citation", "test"], description = "Rebuild and verify every result from the original inputs" }
+check-capstone = { cmd = "python scripts/check_capstone.py .", description = "Run the instructor's project checks" }
