@@ -1,0 +1,181 @@
+---
+title: "Similarity network fusion: a reproducible breast cancer reanalysis"
+author: "Haotian Tang"
+date: today
+date-format: iso
+bibliography: references.bib
+---
+
+```{r}
+#| label: recompute
+#| include: false
+# Every render recomputes all numbers and figures from the checked raw inputs.
+source("scripts/reproduce.R", local = knitr::knit_global())
+snf_result <- metrics[metrics$method == "SNF", ]
+fmt <- function(x) formatC(x, format = "g", digits = 4)
+```
+
+## Question and scope
+
+Can the publication's processed TCGA breast cancer measurements and original
+R implementation produce reproducible patient networks, clusters and survival
+comparisons? This project reanalyzes the breast cohort in @wang2014 using
+`r nrow(clinical)` patients with matched mRNA, DNA methylation, miRNA and
+survival information.
+
+This is a downstream reanalysis of the supplied normalized matrices. It does
+not reconstruct raw TCGA preprocessing, and it does not recover the exact
+published numerical result. The cohort uses the paper's microarray and HM27
+measurements; it is not a substitution with modern RNA-seq or HM450 data.
+
+## Inputs and checks
+
+The publisher's supplementary data, software and methods are downloaded from
+their recorded URLs, checked with SHA256, and made read-only. Only the breast
+cohort and the original SNFtool source files required by the workflow are
+extracted. `metadata/sources.json` and `metadata/inputs.sha256` identify the
+exact resources. The software attachment reports SNFtool version
+`r read.dcf(file.path(source_dir, "..", "DESCRIPTION"))[1, "Version"]`.
+
+```{r}
+#| label: tbl-inputs
+#| tbl-cap: "Input dimensions after patient matching; missing values are counted before analysis."
+knitr::kable(qc[, c("view", "patients", "features", "missing")])
+```
+
+Patients are matched by the first twelve characters of the TCGA barcode and
+ordered by the original clinical table. The parser handles doubled header
+tabs and trailing row tabs without editing the input files. Duplicated IDs,
+missing values, nonfinite measurements, inconsistent patients or unexpected
+dimensions stop the run. No additional log transformation, imputation or
+normalization is applied.
+
+## Analysis choices
+
+```{r}
+#| label: tbl-settings
+#| tbl-cap: "Primary settings recorded in config/analysis.json."
+settings <- config[c("K", "alpha", "iterations", "clusters", "seed", "distance", "normalization")]
+knitr::kable(data.frame(setting = names(settings), value = unlist(settings), row.names = NULL))
+```
+
+Euclidean distances produce one affinity network per data type. SNF fuses
+these networks, and the original R spectral clustering function assigns the
+same number of groups to each single network and the fused network. The
+random number generator and seed are reset for each clustering. A standard
+asymptotic log-rank test compares overall survival between groups; follow-up
+is converted from days to months only for plotting. These choices were
+retained from the original homework analysis rather than tuned to match the
+publication's survival p-value.
+
+## Networks, clusters and survival
+
+![Individual affinity networks and the fused network. Every panel uses the SNF cluster ordering. Diagonals are zeroed for display only; each panel is scaled to its own off-diagonal 99th percentile, so absolute color intensity cannot be compared across panels.](../results/figure1_networks.png){#fig-networks fig-alt="Four patient by patient heatmaps for mRNA, methylation, miRNA and SNF, with boundaries marking the fused-network clusters."}
+
+The fused-network cluster sizes are `r paste(sort(tabulate(labels$SNF, config$clusters)), collapse = ", ")`
+(sorted to avoid assigning scientific meaning to cluster labels). There are
+`r sum(clinical$Death)` observed deaths among `r nrow(clinical)` patients.
+Ordering a network by its own clusters makes blocks easier to see; it is
+not independent evidence that those groups are biologically valid.
+
+![PCA of the centered fused matrix and Kaplan-Meier survival curves. This is analogous to the BIC panels of Supplementary Figure 15, using a two-dimensional projection rather than reconstructing the original coordinates or cluster assignments.](../results/figure2_embedding_survival.png){#fig-embedding fig-alt="A two-dimensional principal-component scatterplot colored by SNF cluster alongside survival curves with cluster sizes, censoring marks and the log-rank result."}
+
+```{r}
+#| label: tbl-survival
+#| tbl-cap: "Computed log-rank p-values and the published BIC values transcribed from main Table 1."
+comparison <- metrics[, c("method", "logrank_p", "paper_p", "cluster_sizes")]
+names(comparison) <- c("Method", "This analysis: p", "Paper: p", "Cluster sizes (label order)")
+knitr::kable(comparison, digits = 6)
+```
+
+The SNF log-rank p-value is `r fmt(snf_result$logrank_p)`, compared with
+`r fmt(snf_result$paper_p)` in the publication. The method with the smallest
+p-value in this run is `r metrics$method[which.min(metrics$logrank_p)]`.
+This run does not reproduce the paper's numerical comparison, and a smaller
+p-value alone is not a measure of clustering quality or clinical usefulness.
+
+![Kaplan-Meier curves for all three single-omics clusterings and SNF. Curves omit confidence intervals and can be unstable late in follow-up, when few patients remain at risk.](../results/figure3_survival_comparison.png){#fig-survival fig-alt="Four survival panels comparing the five clusters from each individual measurement type and the fused network, each annotated with its log-rank p-value and group sizes."}
+
+## Repeatability and sensitivity
+
+The primary network and clustering are recomputed in the same R session with
+the same inputs, parameters and random seed. Network differences are checked
+numerically; partitions are compared through pairwise coassignment, which is
+unchanged if cluster labels are permuted.
+
+```{r}
+#| label: tbl-repeatability
+#| tbl-cap: "Within-run repeatability checks; the partition indicator must be one."
+knitr::kable(data.frame(check = names(checks), value = unname(checks)))
+```
+
+The diagnostic grid is specified in the configuration and all combinations
+are reported. It varies neighbors and iteration count, and contrasts
+Euclidean distance with the squared-distance convention in the software's
+README. No setting is selected by its survival result. Adjusted Rand index
+(ARI) compares each diagnostic partition with the primary partition.
+
+```{r}
+#| label: tbl-sensitivity
+#| tbl-cap: "Complete prespecified sensitivity grid. ARI equals one for identical partitions, regardless of label numbering."
+knitr::kable(diagnostics, digits = 6)
+```
+
+Repeatability under fixed settings does not imply robustness to changes of
+settings, nor does it establish exact agreement with the original paper.
+
+## Limitations and unresolved discrepancies
+
+- The downloaded miRNA table has `r qc$features[qc$view == "miRNA"]`
+  features, while Supplementary Table 1 lists
+  `r config$paper$supplementary_table_miRNA_features` for BIC. The reason is
+  unresolved; the workflow does not invent additional features.
+- The paper describes Euclidean distance, but the bundled software example
+  calls `dist2`, which returns squared Euclidean distances. The primary
+  analysis and the diagnostic alternative are both identified explicitly.
+- Exact BIC execution settings and original patient cluster assignments were
+  not recovered from the inspected materials. The paper describes MATLAB
+  experiments, while this project uses the supplied R implementation. The
+  observed discrepancy cannot be assigned to one cause from this evidence.
+- This complete-case cohort and its limited number of survival events do
+  not establish representative, independently validated clinical subtypes.
+- The validation command checks agreement with this project's reference
+  analysis, not with the unavailable original clustering. Different
+  platforms may differ in floating-point details; supported platforms must
+  pass the numerical and partition checks rather than a bytewise PNG test.
+
+## Software and provenance
+
+```{r}
+#| label: tbl-software
+#| tbl-cap: "Software actually used during this render; the complete environment is pinned in pixi.lock."
+versions <- data.frame(
+  software = c("R", "survival", "jsonlite", "knitr", "rmarkdown", "Quarto"),
+  version = c(as.character(getRversion()),
+              vapply(c("survival", "jsonlite", "knitr", "rmarkdown"),
+                     function(p) as.character(packageVersion(p)), character(1)),
+              system2("quarto", "--version", stdout = TRUE))
+)
+knitr::kable(versions)
+```
+
+The full session, including BLAS, LAPACK and platform details, is recorded
+below and in `results/sessionInfo.txt`. After the report and validation,
+`pixi run reproduce` writes `results/provenance.json` with the Git revision,
+configuration, environment and output hashes. Rendered timestamps and image
+bytes may vary; the scientific checks compare numbers and partitions.
+
+```{r}
+#| label: session
+sessionInfo()
+```
+
+## AI assistance
+
+OpenAI Codex assisted with locating course requirements and public resources,
+code development, debugging, execution, documentation and report drafting.
+Automated checks are recorded separately from the independent classmate
+reproduction required by the course. No independent human review is claimed
+by this automated run.
+
+## References

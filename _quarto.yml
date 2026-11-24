@@ -1,0 +1,19 @@
+project:
+  type: default
+  execute-dir: project
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    embed-resources: true
+    code-fold: true
+    code-tools: true
+    fig-responsive: true
+
+execute:
+  cache: false
+  freeze: false
+  error: false
+
+lang: en
