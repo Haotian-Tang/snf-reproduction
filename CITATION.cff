@@ -1,0 +1,44 @@
+cff-version: 1.2.0
+message: "Please cite this project and the original SNF paper when reusing this workflow."
+type: software
+title: "SNF reproduction: TCGA breast cancer reanalysis"
+version: 1.0.0
+authors:
+  - given-names: Haotian
+    family-names: Tang
+    email: haotian.tang@mbzuai.ac.ae
+repository-code: "https://github.com/Haotian-Tang/snf-reproduction"
+url: "https://github.com/Haotian-Tang/snf-reproduction"
+license: MIT
+abstract: "A locked, automated reanalysis of the original processed TCGA breast cohort with SNFtool 1.2, explicitly documenting differences from the published result."
+keywords:
+  - reproducibility
+  - similarity network fusion
+  - multiomics
+  - TCGA
+references:
+  - type: article
+    title: "Similarity network fusion for aggregating data types on a genomic scale"
+    authors:
+      - family-names: Wang
+        given-names: Bo
+      - family-names: Mezlini
+        given-names: Aziz M.
+      - family-names: Demir
+        given-names: Feyyaz
+      - family-names: Fiume
+        given-names: Marc
+      - family-names: Tu
+        given-names: Zhuowen
+      - family-names: Brudno
+        given-names: Michael
+      - family-names: Haibe-Kains
+        given-names: Benjamin
+      - family-names: Goldenberg
+        given-names: Anna
+    journal: Nature Methods
+    year: 2014
+    volume: 11
+    start: 333
+    end: 337
+    doi: 10.1038/nmeth.2810
