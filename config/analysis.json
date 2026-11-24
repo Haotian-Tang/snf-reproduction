@@ -1,0 +1,23 @@
+{
+  "K": 20,
+  "alpha": 0.5,
+  "iterations": 20,
+  "clusters": 5,
+  "seed": 20261023,
+  "distance": "Euclidean",
+  "normalization": "as supplied",
+  "raw_dir": "data/raw",
+  "results_dir": "results",
+  "days_per_month": 30.4375,
+  "expected_patients": 105,
+  "expected_deaths": 18,
+  "expected_features": {"mRNA": 17814, "Methylation": 23094, "miRNA": 354},
+  "diagnostics": {"K": [15, 20, 25], "iterations": [10, 20], "distance": ["Euclidean", "squared_Euclidean_README"]},
+  "validation": {"p_absolute_tolerance": 1e-8, "matrix_tolerance": 1e-12},
+  "paper": {
+    "doi": "10.1038/nmeth.2810",
+    "table": "Main Table 1, BIC column",
+    "logrank_p": {"mRNA": 0.03, "Methylation": 0.05, "miRNA": 0.30, "SNF": 0.0011},
+    "supplementary_table_miRNA_features": 1046
+  }
+}
