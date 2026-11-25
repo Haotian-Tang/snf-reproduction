@@ -83,7 +83,7 @@ jobs:
         with:
           name: results
           path: release-assets
-      - name: Publish the report and checks in this private repository
+      - name: Publish the report and checks to the GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}

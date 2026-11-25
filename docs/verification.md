@@ -30,7 +30,7 @@ checks a fresh Linux runner and a separately built Linux container on every
 push/PR and release tag. Read the checks on the specific tag you reproduce,
 not only the latest branch badge. Its artifacts contain the report and
 aggregate verification evidence; the release keeps the HTML and JSON checks.
-Access requires repository permission because this project is private.
+The repository and release assets are publicly available.
 
 ## Instructor checker and independent review
 
