@@ -1,7 +1,7 @@
 # Locked Linux container
 
 The image contains this source tree and the linux-64 environment from
-`pixi.lock`. It is built locally or in the private repository's CI; no
+`pixi.lock`. It is built locally or in the repository's CI; no
 container registry account is needed. Docker Desktop must be running.
 
 From a clean clone at the release tag:

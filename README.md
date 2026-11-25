@@ -7,6 +7,8 @@ fusion (SNF). Question: can we reproduce the patient networks, clustering and
 survival comparisons from the supplied matrices and original R software?
 This is Haotian Tang's CBIO7501 capstone, separate from the LTEE project.
 
+One-page project description: [capstone-description.md](docs/capstone-description.md).
+
 **Scope:** a reproducible reanalysis of 105 patients, not an exact recovery of
 the paper's result or raw TCGA preprocessing. Our SNF log-rank p-value is
 0.00700584; the paper reports 0.0011. The difference remains documented.
@@ -26,11 +28,10 @@ Downloads and patient-level inputs are kept out of Git.
 ## Reproduce
 
 Install [Pixi](https://pixi.prefix.dev/latest/installation/) and Git. This
-repository is **private**: accept the repository invitation and authenticate
-to GitHub before cloning. The example uses your GitHub SSH key.
+repository is **public** and can be cloned over HTTPS.
 
 ```bash
-git clone git@github.com:Haotian-Tang/snf-reproduction.git
+git clone https://github.com/Haotian-Tang/snf-reproduction.git
 cd snf-reproduction
 git checkout v1.0.0
 pixi install --locked
@@ -39,7 +40,7 @@ pixi run reproduce
 
 Then open **`reports/snf-report.html`** in a browser. It is a self-contained
 HTML report with the figures embedded; it works offline after generation.
-The rendered report is also attached to the private GitHub release.
+The rendered report is also attached to the GitHub release.
 
 One command downloads and checks the inputs, makes raw files read-only,
 recomputes the R analysis while rendering Quarto, verifies the reference

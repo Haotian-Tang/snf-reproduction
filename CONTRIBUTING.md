@@ -1,7 +1,7 @@
 # Contributing
 
 Open an issue with your OS/CPU, Pixi version, Git commit, exact command and
-full error. The repository is private, so collaborators need an invitation.
+full error. The repository is public; propose changes through a fork and PR.
 Never include credentials, controlled-access data or unpublished personal
 information in an issue.
 
